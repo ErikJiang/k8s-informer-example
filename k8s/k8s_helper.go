@@ -1,6 +1,7 @@
 package k8s
 
 import (
+	"fmt"
 	logger "github.com/sirupsen/logrus"
 	"k8s.io/api/core/v1"
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -10,6 +11,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
+	"os"
 	"time"
 )
 
@@ -21,7 +23,12 @@ type K8SHelper struct {
 func InitK8sHelper() *K8SHelper {
 	k8sHelper := &K8SHelper{}
 	var err error
-	kubeConfPath := "/Users/jiangbo/workspace/go/k8s-informer-example/kube.conf"
+	currentDir, err := os.Getwd()
+	if err != nil {
+		logger.Errorf("Getwd fail, err: %v", err)
+		return nil
+	}
+	kubeConfPath := fmt.Sprintf("%s/k8s/kube.conf", currentDir)
 	k8sHelper.ClientSet, err = NewK8sClientSet(kubeConfPath)
 	if err != nil {
 		logger.Errorf("NewK8sClientSet fail, err: %v", err)

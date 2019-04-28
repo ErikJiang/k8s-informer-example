@@ -16,4 +16,3 @@ vendor/
 
 /main
 /k8s-informer-example
-/kube.conf
